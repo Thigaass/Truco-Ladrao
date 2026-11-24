@@ -1,5 +1,6 @@
 extends Control
 func _ready() -> void:
+	Globais.parar_musica()
 	$Panel/Jogar.pressed.connect(jogar)
 	$Panel/Sair.pressed.connect(sair)
 func jogar() -> void:

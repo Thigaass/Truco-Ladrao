@@ -6,6 +6,10 @@ var poder_esc: int = 0
 var poder_us: bool = false
 var arg_carta: bool = false
 var arg_troca: bool = false
+var musica: AudioStreamPlayer
+func parar_musica() -> void:
+	if is_instance_valid(musica):
+		musica.stop()
 func poder() -> void:
 	if poder_us or arg_carta or arg_troca:
 		return

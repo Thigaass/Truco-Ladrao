@@ -1,5 +1,6 @@
 extends Node2D
 @onready var baralho_node = $Baralho
+@onready var musica: AudioStreamPlayer = $Musica
 var container_rodada: Node2D
 var E: int = 0
 var W: int = 0
@@ -26,6 +27,11 @@ var aguard_bot: bool = false
 var carta_troca: Carta
 var area_troca: Area2D
 func _ready() -> void:
+	Globais.musica = musica
+	if musica.stream == null:
+		musica.stream = load("res://sprites/Sons/Baroes do autismo(ver1).wav")
+	musica.finished.connect(func(): musica.play())
+	musica.play()
 	criar_fundo()
 	container_rodada = Node2D.new()
 	add_child(container_rodada)
@@ -33,6 +39,9 @@ func _ready() -> void:
 	criar_botao()
 	criar_placar()
 	turno()
+func _exit_tree() -> void:
+	if is_instance_valid(musica):
+		musica.stop()
 func criar_fundo() -> void:
 	var camada = CanvasLayer.new()
 	camada.layer = -1
@@ -185,14 +194,12 @@ func carta_clicada(
 		area_troca = area
 		aguard_bot = true
 		Globais.arg_troca = false
-		print("2")
 		return
 	area.input_pickable = false
 	cartas_jogadas += 1
 	area.position = Vector2(485 + cartas_jogadas * 150, 525)
 	valor = carta.valor
 	Globais.maoP.erase(carta)
-	print("Voce jogou: " + carta.num + " de " + carta.naipe + " Valor: " + str(valor))
 	BotTurno()
 	return
 func BotTurno() -> void:
@@ -207,7 +214,6 @@ func BotTurno() -> void:
 	sprite2.texture = load("res://sprites/cartas/" + carta.num + "_" + carta.naipe + ".png")
 	area2.position = Vector2(370 + cartas_jogadas * 150, 525)
 	Globais.maoO.erase(carta)
-	print("Bot jogou: " + carta.num + " de " + carta.naipe+ " Valor: " + str(valor2))
 	cartas_bot.remove_at(0)
 	areas_bot.remove_at(0)
 	sprites_bot.remove_at(0)
@@ -248,15 +254,12 @@ func checar() -> void:
 	var mao_idx := int(cartas_jogadas / 2.0)
 	if valor > valor2:
 		W += 1
-		print("W")
 		wel_sprite.texture = load("res://sprites/PlaceHolders/Win.png")
 	elif valor2 > valor:
 		L += 1
-		print("L")
 		wel_sprite.texture = load("res://sprites/PlaceHolders/Loss.png")
 	else:
 		E += 1
-		print("E")
 		wel_sprite.texture = load("res://sprites/PlaceHolders/Emp.png")
 	wel_sprite.position = Vector2(380 + mao_idx * 290, 690)
 	if cartas_jogadas == 2 and primeiramao == 0:
@@ -347,7 +350,6 @@ func proxrodada() -> void:
 	for filho in container_rodada.get_children():
 		filho.queue_free()
 	rodfim = false
-	print("Bot:" + str(bponto) + " Vc:" + str(pponto))
 	turno()
 func trucar() -> void:
 	if truco >= 4:
