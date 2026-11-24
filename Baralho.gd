@@ -6,35 +6,31 @@ func criarBaralho() -> void:
 			var carta = Carta.new()
 			carta.num = num
 			carta.naipe = naipe
-			if carta.num == ("7"):
-				if carta.naipe == ("Ouros"):
-					carta.valor = 11
-				elif carta.naipe == ("Copas"):
-					carta.valor = 13
-				else:
-					carta.valor = 4
-			if carta.num == ("4"):
-				if carta.naipe == ("Paus"):
-					carta.valor = 14
-				else:
-					carta.valor = 1
-			if carta.num == ("As"):
-				if carta.naipe == ("Espadas"):
-					carta.valor = 12
-				else:
-					carta.valor = 8
-			if carta.num ==("5"):
-				carta.valor = 2
-			if carta.num ==("6"):
-				carta.valor = 3
-			if carta.num ==("J"):
-				carta.valor = 6
-			if carta.num ==("Q"):
-				carta.valor = 5
-			if carta.num ==("K"):
-				carta.valor = 7
-			if carta.num ==("2"):
-				carta.valor = 9
-			if carta.num ==("3"):
-				carta.valor = 10
+			match carta.num:
+				"4":
+					carta.valor_base = 14 if carta.naipe == "Paus" else 1
+				"5":
+					carta.valor_base = 2
+				"6":
+					carta.valor_base = 3
+				"7":
+					if carta.naipe == "Ouros":
+						carta.valor_base = 11
+					elif carta.naipe == "Copas":
+						carta.valor_base = 13
+					else:
+						carta.valor_base = 4
+				"Q":
+					carta.valor_base = 5
+				"J":
+					carta.valor_base = 6
+				"K":
+					carta.valor_base = 7
+				"As":
+					carta.valor_base = 12 if carta.naipe == "Espadas" else 8
+				"2":
+					carta.valor_base = 9
+				"3":
+					carta.valor_base = 10
+			carta.valor = carta.valor_base
 			Globais.baralho.append(carta)

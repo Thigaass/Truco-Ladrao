@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://gmdrgnekn88d"
-path="res://.godot/imported/BotaoApertado.png-05d28b0a492d9887f47d242dc4603d76.ctex"
+uid="uid://licywmc2me5v"
+path="res://.godot/imported/Botao12AntesdeApertar.png-3d97734d3b94e83b6c6443d4e2824412.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/PlaceHolders/BotaoApertado.png"
-dest_files=["res://.godot/imported/BotaoApertado.png-05d28b0a492d9887f47d242dc4603d76.ctex"]
+source_file="res://sprites/PlaceHolders/MeuButão/Botao12AntesdeApertar.png"
+dest_files=["res://.godot/imported/Botao12AntesdeApertar.png-3d97734d3b94e83b6c6443d4e2824412.ctex"]
 
 [params]
 

@@ -1,6 +1,6 @@
-extends Node
+extends RefCounted
 class_name Carta
 var num: String
 var naipe: String
-var sprite: Sprite2D
+var valor_base: int = 0
 var valor: int = 0

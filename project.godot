@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Globais="*uid://bdrfkklg1me5u"
-Baralho="*uid://rnbbotl1qvnp"
 
 [display]
 

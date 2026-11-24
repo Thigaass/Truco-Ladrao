@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ya0btiwdcjqw"
-path="res://.godot/imported/BotaoAntesdeAperta.png-9d958f36efa0805aa7a11028f134ccc1.ctex"
+uid="uid://bow40mohmwioj"
+path="res://.godot/imported/02.png-e23fa0da4755893cf87e4e10f93a232d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/PlaceHolders/BotaoAntesdeAperta.png"
-dest_files=["res://.godot/imported/BotaoAntesdeAperta.png-9d958f36efa0805aa7a11028f134ccc1.ctex"]
+source_file="res://sprites/GUI/Numeros/02.png"
+dest_files=["res://.godot/imported/02.png-e23fa0da4755893cf87e4e10f93a232d.ctex"]
 
 [params]
 
