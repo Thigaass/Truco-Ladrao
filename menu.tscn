@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://77m411f3d5if" path="res://menu.gd" id="1_lti8b"]
 [ext_resource type="Texture2D" uid="uid://dpo8wmidv3gek" path="res://sprites/PlaceHolders/Butao.png" id="2_ouk20"]
+[ext_resource type="Texture2D" uid="uid://pmkci3yjdmyh" path="res://sprites/PlaceHolders/cenario.png" id="3_cenario"]
 
 [node name="menu" type="Control" unique_id=423173807]
 layout_mode = 3
@@ -11,6 +12,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lti8b")
+
+[node name="Fundo" type="TextureRect" parent="." unique_id=1498273611]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_cenario")
+expand_mode = 1
 
 [node name="Panel" type="Panel" parent="." unique_id=1789817645]
 layout_mode = 0

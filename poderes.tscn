@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dpo8wmidv3gek" path="res://sprites/PlaceHolders/Butao.png" id="1_5kp4i"]
 [ext_resource type="Texture2D" uid="uid://bmpa3mww0kj0i" path="res://sprites/PlaceHolders/Poder_1.png" id="2_jlgdq"]
 [ext_resource type="Texture2D" uid="uid://djcjrilijmp7g" path="res://sprites/PlaceHolders/Poder_2.png" id="3_ycd5d"]
+[ext_resource type="Texture2D" uid="uid://pmkci3yjdmyh" path="res://sprites/PlaceHolders/cenario.png" id="4_cenario"]
 
 [node name="poderes" type="Control" unique_id=509657881]
 layout_mode = 3
@@ -14,41 +15,87 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_2ted1")
 
+[node name="Fundo" type="TextureRect" parent="." unique_id=1873429105]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_cenario")
+expand_mode = 1
+
 [node name="Panel" type="Panel" parent="." unique_id=1565684959]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchor_left = 0.31
+anchor_top = 0.1125
+anchor_right = 0.69
+anchor_bottom = 0.775
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Poder1" type="TextureButton" parent="Panel" unique_id=940227658]
-layout_mode = 0
-offset_left = 400.0
-offset_top = 200.0
-offset_right = 465.0
-offset_bottom = 265.0
-scale = Vector2(0.2, 0.2)
+layout_mode = 1
+anchor_left = 0.25
+anchor_top = 0.25
+anchor_right = 0.25
+anchor_bottom = 0.25
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
 texture_normal = ExtResource("2_jlgdq")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Poder2" type="TextureButton" parent="Panel" unique_id=1071596949]
-layout_mode = 0
-offset_left = 700.0
-offset_top = 200.0
-offset_right = 765.0
-offset_bottom = 265.0
-scale = Vector2(0.5, 0.5)
+layout_mode = 1
+anchor_left = 0.75
+anchor_top = 0.25
+anchor_right = 0.75
+anchor_bottom = 0.25
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
 texture_normal = ExtResource("3_ycd5d")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Poder3" type="TextureButton" parent="Panel" unique_id=304394537]
-layout_mode = 0
-offset_left = 400.0
-offset_top = 600.0
-offset_right = 465.0
-offset_bottom = 665.0
+layout_mode = 1
+anchor_left = 0.25
+anchor_top = 0.75
+anchor_right = 0.25
+anchor_bottom = 0.75
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
 texture_normal = ExtResource("1_5kp4i")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Poder4" type="TextureButton" parent="Panel" unique_id=782136478]
-layout_mode = 0
-offset_left = 700.0
-offset_top = 600.0
-offset_right = 740.0
-offset_bottom = 640.0
+layout_mode = 1
+anchor_left = 0.75
+anchor_top = 0.75
+anchor_right = 0.75
+anchor_bottom = 0.75
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
 texture_normal = ExtResource("1_5kp4i")
+ignore_texture_size = true
+stretch_mode = 5
