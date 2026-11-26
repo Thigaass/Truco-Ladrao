@@ -67,8 +67,21 @@ func resetar_poderes() -> void:
 	cancelar_poder()
 
 
+func criar_mascara_alpha(textura: Texture2D) -> BitMap:
+	if textura == null:
+		return null
+	var img := textura.get_image()
+	if img == null:
+		return null
+	if img.is_compressed():
+		img.decompress()
+	var mascara := BitMap.new()
+	mascara.create_from_image_alpha(img)
+	return mascara
+
+
 func sprite_poder(botao: TextureButton) -> void:
-	var caminho := "res://sprites/PlaceHolders/Poder_" + str(poder_esc) + ".png"
+	var caminho := "res://sprites/GUI/BotaoPoder/Poder_" + str(poder_esc) + ".png"
 	var textura: Texture2D
 	if ResourceLoader.exists(caminho):
 		textura = load(caminho)
@@ -79,11 +92,12 @@ func sprite_poder(botao: TextureButton) -> void:
 	botao.texture_hover = textura
 	botao.texture_pressed = textura
 	botao.texture_disabled = textura
+	botao.texture_click_mask = criar_mascara_alpha(textura)
 
 	botao.ignore_texture_size = true
 	botao.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
-	botao.custom_minimum_size = Vector2(90, 90)
-	botao.size = Vector2(90, 90)
+	botao.custom_minimum_size = Vector2(244, 244)
+	botao.size = Vector2(244, 244)
 	botao.scale = Vector2.ONE
 
 #endregion

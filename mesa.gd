@@ -104,9 +104,15 @@ func criar_botao() -> void:
 	BotaoPoder = TextureButton.new()
 
 	atualizar_botao_truco()
-	BotaoTruco.position = Vector2(750, 920)
+	BotaoTruco.ignore_texture_size = true
+	BotaoTruco.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	BotaoTruco.custom_minimum_size = Vector2(290, 290)
+	BotaoTruco.size = Vector2(290, 290)
+	BotaoTruco.scale = Vector2.ONE
+
 	Globais.sprite_poder(BotaoPoder)
-	BotaoPoder.position = Vector2(995, 977)
+	posicionar_botoes()
+	get_viewport().size_changed.connect(posicionar_botoes)
 	atualizar_visual_botao_poder()
 
 	BotaoTruco.pressed.connect(trucar)
@@ -114,6 +120,16 @@ func criar_botao() -> void:
 
 	add_child(BotaoTruco)
 	add_child(BotaoPoder)
+
+
+func posicionar_botoes() -> void:
+	if not is_instance_valid(BotaoTruco) or not is_instance_valid(BotaoPoder):
+		return
+
+	var altura_viewport: float = get_viewport_rect().size.y
+	var centro_y: float = clampf(altura_viewport - 96.0, 1045.0, 1125.0)
+	BotaoTruco.position = Vector2(704.0, centro_y - 148.0)
+	BotaoPoder.position = Vector2(933.0, centro_y - 127.0)
 
 
 func atualizar_botao_truco() -> void:
@@ -139,14 +155,7 @@ func atualizar_botao_truco() -> void:
 				tex_normal = load("res://sprites/GUI/BotaoTruco/Botao12Apertado.png")
 				tex_pressed = load("res://sprites/GUI/BotaoTruco/Botao12Apertado.png")
 
-		var mascara: BitMap = null
-		if tex_normal != null:
-			var img := tex_normal.get_image()
-			if img != null:
-				if img.is_compressed():
-					img.decompress()
-				mascara = BitMap.new()
-				mascara.create_from_image_alpha(img)
+		var mascara: BitMap = Globais.criar_mascara_alpha(tex_normal)
 
 		cache_truco[nivel] = {
 			"normal": tex_normal,
@@ -498,7 +507,7 @@ func carta_clicada(
 				animando_poder = false
 				if not is_instance_valid(area):
 					return
-				adicionar_indicador_poder(area, "res://sprites/PlaceHolders/Poder_1.png")
+				adicionar_indicador_poder(area, "res://sprites/GUI/BotaoPoder/Poder_1.png")
 			)
 		else:
 			var caminho_novo: String = obter_caminho_sprite_por_valor(carta.valor, carta.naipe)
@@ -583,7 +592,7 @@ func BotTurno() -> void:
 	sprite2.texture = load("res://sprites/cartas/" + carta.num + "_" + carta.naipe + ".png")
 
 	if area2.get_meta("poder3_aplicado", false):
-		adicionar_indicador_poder(area2, "res://sprites/PlaceHolders/Poder_3.png")
+		adicionar_indicador_poder(area2, "res://sprites/GUI/BotaoPoder/Poder_3.png")
 
 	area2.position = obter_posicao_carta_mesa(cartas_na_vaza)
 	area2.z_index = cartas_na_vaza - 1
@@ -780,8 +789,19 @@ func adicionar_indicador_poder(area: Area2D, caminho_icone: String) -> void:
 		indicador.texture = load("res://sprites/PlaceHolders/Butao.png")
 
 	var tex_size: Vector2 = indicador.texture.get_size()
-	if tex_size.x > 0:
-		var fator: float = 30.0 / tex_size.x
+	var largura_visivel: float = tex_size.x
+	var img := indicador.texture.get_image()
+	if img != null:
+		if img.is_compressed():
+			img.decompress()
+		var used_rect: Rect2i = img.get_used_rect()
+		if used_rect.size.x > 0:
+			largura_visivel = float(used_rect.size.x)
+			var centro_usado: Vector2 = Vector2(used_rect.position) + Vector2(used_rect.size) * 0.5
+			indicador.offset = (tex_size * 0.5) - centro_usado
+
+	if largura_visivel > 0.0:
+		var fator: float = 34.0 / largura_visivel
 		indicador.scale = Vector2(fator, fator)
 
 	indicador.position = Vector2(-60, -30)

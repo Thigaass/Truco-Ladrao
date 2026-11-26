@@ -14,6 +14,7 @@ const DESCRICOES_PODERES := {
 func _ready() -> void:
 	for i in range(1, 5):
 		var botao := get_node("Panel/Poder" + str(i)) as TextureButton
+		botao.texture_click_mask = Globais.criar_mascara_alpha(botao.texture_normal)
 		botao.pressed.connect(func(): esc_poder(i))
 		botao.mouse_entered.connect(func(): mostrar_descricao(i))
 		botao.mouse_exited.connect(esconder_descricao)
