@@ -25,33 +25,86 @@ texture = ExtResource("3_cenario")
 expand_mode = 1
 
 [node name="Panel" type="Panel" parent="." unique_id=1789817645]
-layout_mode = 0
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Titulo" type="Label" parent="Panel" unique_id=1913860033]
-layout_mode = 0
-offset_left = 678.00006
-offset_top = 421.0
-offset_right = 785.00006
-offset_bottom = 444.0
-scale = Vector2(5, 5)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.44375
+anchor_right = 0.5
+anchor_bottom = 0.44375
+offset_left = -360.0
+offset_top = -50.0
+offset_right = 360.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 72
 text = "Truco Ladrao!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Jogar" type="TextureButton" parent="Panel" unique_id=1232249640]
-layout_mode = 0
-offset_left = 800.0
-offset_top = 930.0
-offset_right = 865.0
-offset_bottom = 995.0
-scale = Vector2(4, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.9
+anchor_right = 0.5
+anchor_bottom = 0.9
+offset_left = -130.0
+offset_top = -70.0
+offset_right = 130.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
 texture_normal = ExtResource("2_ouk20")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Panel/Jogar" unique_id=1232249641]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "Jogar"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Sair" type="TextureButton" parent="Panel" unique_id=2008479939]
-layout_mode = 0
-offset_left = 800.0
-offset_top = 1000.0
-offset_right = 865.0
-offset_bottom = 1065.0
-scale = Vector2(4, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.9
+anchor_right = 0.5
+anchor_bottom = 0.9
+offset_left = -130.0
+offset_top = 5.0
+offset_right = 130.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
 texture_normal = ExtResource("2_ouk20")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="Panel/Sair" unique_id=2008479940]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "Sair"
+horizontal_alignment = 1
+vertical_alignment = 1

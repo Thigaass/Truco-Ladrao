@@ -1,11 +1,15 @@
 extends Node2D
+
+
 func criarBaralho() -> void:
 	Globais.baralho.clear()
-	for naipe in ["Ouros", "Espadas", "Copas", "Paus"]:
-		for num in ["As", "2", "3", "4", "5", "6", "7", "J", "Q", "K"]:
-			var carta = Carta.new()
+
+	for naipe: String in ["Ouros", "Espadas", "Copas", "Paus"]:
+		for num: String in ["As", "2", "3", "4", "5", "6", "7", "J", "Q", "K"]:
+			var carta := Carta.new()
 			carta.num = num
 			carta.naipe = naipe
+
 			match carta.num:
 				"4":
 					carta.valor_base = 14 if carta.naipe == "Paus" else 1
@@ -32,5 +36,6 @@ func criarBaralho() -> void:
 					carta.valor_base = 9
 				"3":
 					carta.valor_base = 10
+
 			carta.valor = carta.valor_base
 			Globais.baralho.append(carta)
