@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://n4cu8ahl81sy"]
 
 [ext_resource type="Script" uid="uid://drug44mdb65o7" path="res://poderes.gd" id="1_2ted1"]
-[ext_resource type="Texture2D" uid="uid://dpo8wmidv3gek" path="res://sprites/PlaceHolders/Butao.png" id="1_5kp4i"]
 [ext_resource type="Texture2D" uid="uid://bmpa3mww0kj0i" path="res://sprites/PlaceHolders/Poder_1.png" id="2_jlgdq"]
 [ext_resource type="Texture2D" uid="uid://djcjrilijmp7g" path="res://sprites/PlaceHolders/Poder_2.png" id="3_ycd5d"]
 [ext_resource type="Texture2D" uid="uid://pmkci3yjdmyh" path="res://sprites/PlaceHolders/cenario.png" id="4_cenario"]
+[ext_resource type="Texture2D" path="res://sprites/PlaceHolders/Poder_3.png" id="5_poder3"]
+[ext_resource type="Texture2D" path="res://sprites/PlaceHolders/Poder_4.png" id="6_poder4"]
 
 [node name="poderes" type="Control" unique_id=509657881]
 layout_mode = 3
@@ -80,7 +81,7 @@ offset_right = 100.0
 offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
-texture_normal = ExtResource("1_5kp4i")
+texture_normal = ExtResource("5_poder3")
 ignore_texture_size = true
 stretch_mode = 5
 
@@ -96,6 +97,6 @@ offset_right = 100.0
 offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
-texture_normal = ExtResource("1_5kp4i")
+texture_normal = ExtResource("6_poder4")
 ignore_texture_size = true
 stretch_mode = 5

@@ -27,6 +27,11 @@ var aguard_bot: bool = false
 var carta_troca: Carta
 var area_troca: Area2D
 func _ready() -> void:
+	Globais.poder_us = false
+	Globais.arg_carta = false
+	Globais.arg_troca = false
+	Globais.arg_carta_bot = false
+	Globais.arg_revelar = false
 	Globais.musica = musica
 	if musica.stream == null:
 		musica.stream = load("res://sprites/Sons/Baroes do autismo(ver1).wav")
@@ -58,7 +63,7 @@ func criar_botao() -> void:
 	BotaoPoder = TextureButton.new()
 	
 	atualizar_botao_truco()
-	BotaoTruco.position = Vector2(750, 950)
+	BotaoTruco.position = Vector2(750, 920)
 	Globais.sprite_poder(BotaoPoder)
 	
 	BotaoTruco.pressed.connect(trucar)
@@ -89,6 +94,14 @@ func atualizar_botao_truco() -> void:
 	BotaoTruco.texture_hover = tex_normal
 	BotaoTruco.texture_pressed = tex_pressed
 	BotaoTruco.texture_disabled = tex_pressed
+	if tex_normal != null:
+		var img := tex_normal.get_image()
+		if img != null:
+			if img.is_compressed():
+				img.decompress()
+			var mascara := BitMap.new()
+			mascara.create_from_image_alpha(img)
+			BotaoTruco.texture_click_mask = mascara
 func criar_placar() -> void:
 	placar_sprite = Sprite2D.new()
 	placar_sprite.texture = load("res://sprites/GUI/Numeros/Placar.png")
@@ -117,10 +130,10 @@ func atualizar_placar() -> void:
 	else:
 		placar_bot.visible = false
 func usar_poder() -> void:
-	if rodfim or aguard_bot or Globais.poder_us or Globais.arg_carta or Globais.arg_troca:
+	if rodfim or aguard_bot or Globais.poder_us or Globais.arg_carta or Globais.arg_troca or Globais.arg_carta_bot or Globais.arg_revelar:
 		return
 	Globais.poder()
-	if Globais.poder_esc in [1, 2]:
+	if Globais.poder_esc in [1, 2, 3, 4]:
 		BotaoPoder.disabled = true
 func turno() -> void:
 	Globais.distribuir()
@@ -175,17 +188,29 @@ func carta_clicada(
 		return
 	if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
 		return
-	if aguard_bot:
+	if aguard_bot or Globais.arg_carta_bot or Globais.arg_revelar:
 		return
 	var carta: Carta = area.get_meta("carta")
 	if Globais.arg_carta:
 		carta.valor += 1
-		var indicador = Sprite2D.new()
-		indicador.texture = load("res://sprites/PlaceHolders/Poder_1.png")
-		indicador.scale = Vector2 (0.03, 0.03)
-		indicador.position = Vector2 (-60, -30)
-		indicador.z_index = 1
-		area.add_child(indicador)
+		var sprite_carta := area.get_child(0) as Sprite2D
+		var tex_antigo: Texture2D = sprite_carta.texture
+		if carta.num == "4" and carta.naipe == "Paus":
+			var tween := animar_poder_carta(area, sprite_carta, tex_antigo, null)
+			tween.finished.connect(func():
+				if not is_instance_valid(area):
+					return
+				var indicador = Sprite2D.new()
+				indicador.texture = load("res://sprites/PlaceHolders/Poder_1.png")
+				indicador.scale = Vector2(0.03, 0.03)
+				indicador.position = Vector2(-60, -30)
+				indicador.z_index = 1
+				area.add_child(indicador)
+			)
+		else:
+			var caminho_novo: String = obter_caminho_sprite_por_valor(carta.valor, carta.naipe)
+			var tex_novo: Texture2D = load(caminho_novo) if caminho_novo != "" else null
+			animar_poder_carta(area, sprite_carta, tex_antigo, tex_novo)
 		Globais.arg_carta = false
 		Globais.poder_us = true
 		return
@@ -212,6 +237,20 @@ func BotTurno() -> void:
 	valor2 = carta.valor
 	cartas_jogadas +=1
 	sprite2.texture = load("res://sprites/cartas/" + carta.num + "_" + carta.naipe + ".png")
+	if area2.get_meta("poder3_aplicado", false):
+		var indicador: Sprite2D = Sprite2D.new()
+		var caminho_poder3: String = "res://sprites/PlaceHolders/Poder_3.png"
+		if ResourceLoader.exists(caminho_poder3):
+			indicador.texture = load(caminho_poder3)
+		else:
+			indicador.texture = load("res://sprites/PlaceHolders/Butao.png")
+		var tex_size: Vector2 = indicador.texture.get_size()
+		if tex_size.x > 0:
+			var fator: float = 30.0 / tex_size.x
+			indicador.scale = Vector2(fator, fator)
+		indicador.position = Vector2(-60, -30)
+		indicador.z_index = 1
+		area2.add_child(indicador)
 	area2.position = Vector2(370 + cartas_jogadas * 150, 525)
 	Globais.maoO.erase(carta)
 	cartas_bot.remove_at(0)
@@ -226,13 +265,31 @@ func bot_carta_clicada(
 	shape_idx: int,
 	area_bot: Area2D
 ) -> void:
-	if rodfim or not aguard_bot:
+	if rodfim or (not aguard_bot and not Globais.arg_carta_bot and not Globais.arg_revelar):
 		return
 	if not event is InputEventMouseButton:
 		return
 	if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed:
 		return
 	var carta_bot: Carta = area_bot.get_meta("carta")
+	if Globais.arg_revelar:
+		var indice_revelar = cartas_bot.find(carta_bot)
+		if indice_revelar == -1:
+			return
+		sprites_bot[indice_revelar].texture = load("res://sprites/cartas/" + carta_bot.num + "_" + carta_bot.naipe + ".png")
+		Globais.arg_revelar = false
+		Globais.poder_us = true
+		return
+	if Globais.arg_carta_bot:
+		if not cartas_bot.has(carta_bot):
+			return
+		carta_bot.valor -= 1
+		area_bot.set_meta("poder3_aplicado", true)
+		var sprite_bot := area_bot.get_child(0) as Sprite2D
+		animar_poder_carta(area_bot, sprite_bot, sprite_bot.texture, null)
+		Globais.arg_carta_bot = false
+		Globais.poder_us = true
+		return
 	var indice_jogador = Globais.maoP.find(carta_troca)
 	var indice_bot = cartas_bot.find(carta_bot)
 	var indice_mao_bot = Globais.maoO.find(carta_bot)
@@ -311,6 +368,8 @@ func cabo() -> void:
 	if pponto >= 12 or bponto >= 12:
 		Globais.arg_carta = false
 		Globais.arg_troca = false
+		Globais.arg_carta_bot = false
+		Globais.arg_revelar = false
 		Globais.poder_us = false
 		await get_tree().create_timer(1.5).timeout
 		if is_inside_tree():
@@ -330,6 +389,8 @@ func proxrodada() -> void:
 	BotaoTruco.disabled = false
 	Globais.arg_carta = false
 	Globais.arg_troca = false
+	Globais.arg_carta_bot = false
+	Globais.arg_revelar = false
 	aguard_bot = false
 	carta_troca = null
 	area_troca = null
@@ -360,3 +421,68 @@ func trucar() -> void:
 	if truco == 4:
 		BotaoTruco.disabled = true
 		return
+func obter_caminho_sprite_por_valor(valor_carta: int, naipe_base: String) -> String:
+	var num_sprite: String = ""
+	var naipe_sprite: String = naipe_base
+	match valor_carta:
+		1:
+			num_sprite = "4"
+			if naipe_sprite == "Paus":
+				naipe_sprite = "Espadas"
+		2:
+			num_sprite = "5"
+		3:
+			num_sprite = "6"
+		4:
+			num_sprite = "7"
+			if naipe_sprite == "Ouros" or naipe_sprite == "Copas":
+				naipe_sprite = "Espadas"
+		5:
+			num_sprite = "Q"
+		6:
+			num_sprite = "J"
+		7:
+			num_sprite = "K"
+		8:
+			num_sprite = "As"
+			if naipe_sprite == "Espadas":
+				naipe_sprite = "Paus"
+		9:
+			num_sprite = "2"
+		10:
+			num_sprite = "3"
+		11:
+			num_sprite = "7"
+			naipe_sprite = "Ouros"
+		12:
+			num_sprite = "As"
+			naipe_sprite = "Espadas"
+		13:
+			num_sprite = "7"
+			naipe_sprite = "Copas"
+		14:
+			num_sprite = "4"
+			naipe_sprite = "Paus"
+		_:
+			return ""
+	return "res://sprites/cartas/" + num_sprite + "_" + naipe_sprite + ".png"
+func animar_poder_carta(area: Area2D, sprite: Sprite2D, tex_antigo: Texture2D, tex_novo: Texture2D = null) -> Tween:
+	var escala_normal: Vector2 = sprite.scale
+	var escala_menor: Vector2 = escala_normal * 0.75
+	var passo: float = 1.0 / 6.0
+	var trocar_textura: bool = tex_novo != null and tex_novo != tex_antigo
+	var tween: Tween = area.create_tween()
+	for i in range(3):
+		tween.tween_callback(func():
+			sprite.scale = escala_menor
+			if trocar_textura:
+				sprite.texture = tex_antigo
+		)
+		tween.tween_interval(passo)
+		tween.tween_callback(func():
+			sprite.scale = escala_normal
+			if trocar_textura:
+				sprite.texture = tex_novo
+		)
+		tween.tween_interval(passo)
+	return tween
